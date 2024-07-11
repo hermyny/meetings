@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MeetingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: MeetingRepository::class)]
 class Meeting
@@ -26,11 +28,36 @@ class Meeting
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $time = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $participant = null;
+    #[ORM\ManyToOne(inversedBy: 'meetings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $creator = null;
 
-    #[ORM\ManyToOne(inversedBy: 'meeting')]
-    private ?User $user = null;
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'meetings')]
+    private Collection $participant;
+
+    public function __construct()
+    {
+        $this->participant = new ArrayCollection();
+    }
+
+  
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    
 
     public function getId(): ?int
     {
@@ -85,27 +112,29 @@ class Meeting
         return $this;
     }
 
-    public function getParticipant(): ?string
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipant(): Collection
     {
         return $this->participant;
     }
 
-    public function setParticipant(?string $participant): static
+    public function addParticipant(User $participant): static
     {
-        $this->participant = $participant;
+        if (!$this->participant->contains($participant)) {
+            $this->participant->add($participant);
+        }
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function removeParticipant(User $participant): static
     {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
+        $this->participant->removeElement($participant);
 
         return $this;
     }
+
+   
 }
