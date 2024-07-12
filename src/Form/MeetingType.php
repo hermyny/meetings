@@ -34,7 +34,8 @@ class MeetingType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded'=> true,
-                'label' =>'Participants à la réunion'
+                'label' =>'Participants à la réunion',
+                'attr' => ['class' => 'form-check']
 
             ])
         ;
