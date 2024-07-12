@@ -1,0 +1,10 @@
+<div class="container_fluid">
+  <div class="row">
+    <div class="mb-3">
+{{ form_start(form, {'attr': {'class': 'mx-1 mx-md-4'}}) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary btn-lg mt-5">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+    </div>
+  </div>
+</div>
