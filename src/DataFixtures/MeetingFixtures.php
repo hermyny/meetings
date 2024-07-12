@@ -20,8 +20,8 @@ class MeetingFixtures extends Fixture implements DependentFixtureInterface
             $meeting = new Meeting();
             $creator = $this->getReference('user_' . $faker->numberBetween(1,20));
             $meeting->setCreator($creator);
-            $meeting->setAgenda($faker->text(20));
-            $meeting->setTitle($faker->sentence());
+            $meeting->setAgenda($faker->sentence(6));
+            $meeting->setTitle($faker->text(20));
             $time = $faker->time();
             $timeImmutable = new \DateTimeImmutable($time);
             $meeting->setTime($timeImmutable);
